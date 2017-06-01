@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>Feedback</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="script.js"></script>
+	<style type="text/css">
+	html,
+	body {
+		height: 100%;
+	}
+	
+	.container {
+		height: 100%;
+	}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<h1 class="text-center">Tweet stats</h1>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<h3 class="text-center">Likes</h3>
+				<div class="progress">
+					<div id="likes" class="progress-bar progress-bar-success" role="progressbar"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<h3 class="text-center">Dislikes</h3>
+				<div class="progress">
+					<div id = "dislikes" class="progress-bar progress-bar-danger" role="progressbar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	all = likes + dislikes
+	bar_likes = document.getElementById("likes")
+	bar_likes.style.width = 100 * likes / all + "%"
+	bar_likes.textContent = likes
+	bar_dislikes = document.getElementById("dislikes")
+	bar_dislikes.style.width = 100 * dislikes / all + "%"
+	bar_dislikes.textContent = dislikes
+</script>
+</html>
