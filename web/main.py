@@ -47,6 +47,7 @@ class BufferFile(object):
 class Handler(webapp2.RequestHandler):
     def get(self, id, script):
         buff = self.app.config.get("BufferFile")
+        host = self.app.config.get("host")
         if script == "script.js":
             # Javascript
             likes, dislikes = buff.get(id)
@@ -58,21 +59,26 @@ class Handler(webapp2.RequestHandler):
             # Html
             self.response.content_type = "text/html"
             opinion = self.request.get("opinion")
-            if opinion == "like":
-                buff.like(id)
-            if opinion == "dislike":
-                buff.dislike(id)
+            if self.request.cookies.get(str(id)) is None:
+                if opinion == "like":
+                    buff.like(id)
+                if opinion == "dislike":
+                    buff.dislike(id)
             with open("stats.html") as f:
                 self.response.write("\n".join(f.readlines()))
-
-
-app = webapp2.WSGIApplication([
-    webapp2.Route('/<:(\d)+>/<:(script\.js)?>', Handler,  methods=['GET'])
-], debug=False, config={"BufferFile": BufferFile()})
+            # Saves a cookie in the client.
+            self.response.set_cookie(str(id), "", max_age=259200, path='/',
+                                     domain=host, secure=False)
 
 
 def main(host, port):
     from paste import httpserver
+    app = webapp2.WSGIApplication([
+        webapp2.Route('/<:(\d)+>/<:(script\.js)?>', Handler,  methods=['GET'])
+    ], debug=False, config={
+        "BufferFile": BufferFile(),
+        "host": host
+    })
     httpserver.serve(app, host=host, port=port)
 
 
